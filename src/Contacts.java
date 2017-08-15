@@ -23,6 +23,7 @@ public class Contacts {
     }
 
     private void determineChoice(int choice) {
+        try {
             switch (choice) {
                 case 1:
                     viewAllContact();
@@ -44,39 +45,38 @@ public class Contacts {
                     System.out.println("\n\n**********************\n\tInvalid Input\n**********************\n\n");
             }
         }
+        catch (Exception e){
+            System.out.println(e);
+            determineChoice(5);
+        }
+    }
+
     private void updateExisting() {
         System.out.println("\n\n***********************************\n\tUpdating Existing Contact\n***********************************\n");
+        System.out.println("I do nothing, delete then re-add as updated. Boom done!");
     }
 
     private void removeContact() {
         System.out.println("\n\n----------Removing Contact----------\n");
         System.out.print("Enter Name: ");
-        String tempName = scan.next();
-        scan.nextLine();
-        System.out.print("Enter Phone: ");
-        String tempPhone = scan.next();
+        try {
+            String tempName = scan.next();
+            scan.nextLine();
+            System.out.print("Enter Phone: ");
+            String tempPhone = scan.next();
 
-        int tmpInt;
-        //Can't do the following foreach loop below. contacts needs to be iterated though I believe.
-        // In its current state the following throws:
-        //      Exception in thread "main" java.util.ConcurrentModificationException
-        //      at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
-        //      at java.util.ArrayList$Itr.next(ArrayList.java:851)
-        for (String w:contacts){
-            if (w.contains(tempName) && w.contains(tempPhone)){
-                String tmp = ("Name: " + tempName + "\t\t\tPhone: " + tempPhone);
-                try {
-                    contacts.remove(tmp);
+            System.out.println("tempPhone -->" + tempPhone);
 
-                    System.out.println("\nContact Removed\n");
-                    viewAllContact();
-                }
-                catch (Exception e){
-                    System.out.println(e);
-                }
+            if (contacts.contains("Name: " + tempName + "\t\t\tPhone: " + tempPhone)) {
+                contacts.remove(("Name: " + tempName + "\t\t\tPhone: " + tempPhone));
+            } else {
+                System.out.println("\n------------------------------------\nContact not found, check your typing\n------------------------------------\n\n");
             }
+        } catch (Exception e) {
+            System.out.println("Oooooppppssssss!!!!!\n" + e);
         }
     }
+
 
     private void addNewContact() {
         System.out.print("Enter New Contact Name: ");
@@ -84,10 +84,9 @@ public class Contacts {
         //scan.nextLine();
         System.out.print("\nEnter A Number for " + this.name + ": ");
         this.phone = scan.next();
-        if(checkIfExisting(this.name,this.phone)){
+        if (checkIfExisting(this.name, this.phone)) {
             System.out.println("\n--------------That contact already Exists---------------\n\n");
-        }
-        else {
+        } else {
             currentContact[0] = this.name;
             currentContact[1] = this.phone;
             String temp = ("Name: " + this.name + "\t\t\tPhone: " + this.phone);
@@ -98,9 +97,9 @@ public class Contacts {
 
     }
 
-    private boolean checkIfExisting(String name, String phone){
-        for (String w: contacts){
-            if(w.contains(name) && w.contains(phone)){
+    private boolean checkIfExisting(String name, String phone) {
+        for (String w : contacts) {
+            if (w.contains(name) && w.contains(phone)) {
                 return true;
             }
         }
@@ -121,9 +120,16 @@ public class Contacts {
     public void menu() {
         boolean flag = true;
         while (flag) {
-            System.out.print(printChoices());
-            int choice = scan.nextInt();
-            determineChoice(choice);
+            try {
+                System.out.print(printChoices());
+                int choice = scan.nextInt();
+                determineChoice(choice);
+            }
+            catch (Exception e){
+                System.out.println("Please Restart the App\n" +
+                        "And PLEASE enter a number\n\n\t" + e);
+                System.exit(0);
+            }
         }
     }
 }
