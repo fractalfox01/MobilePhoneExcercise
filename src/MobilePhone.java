@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /*
 Entry Point for Mobile Phone Program
 
@@ -17,9 +19,11 @@ MobilePhone should do everything with Contact objects only.
 public class MobilePhone {
     private String name;
 
-    public static void main(String[] args){
-        Contacts tom = new Contacts();
-        tom.menu();
+    public static void main(String[] args) {
+        Contacts phone = new Contacts();
+        phone.menu();
+
+
     }
 
 }
